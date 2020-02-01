@@ -10,7 +10,7 @@
 支持局域网内多局游戏同时进行（python多线程并发编程thread模块）<br>
 目前还差pygame图形化和异常处理问题未完成
 
-[客户端源代码]()<br>
+[客户端源代码](client/client.py)<br>
 [服务器端源代码]()
 
 # English version
