@@ -51,8 +51,6 @@ def dunch_offical(players):
                 players[i].send(pickle.dumps(palyers_cards[i]))
         give_index = [random.randint(0,2)]
         broadcast(players,give_index)
-
-        print("guangbo chenggong")
         data = pickle.loads(players[0].recv(1024))
         print(data)
 
