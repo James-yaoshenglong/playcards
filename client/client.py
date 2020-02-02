@@ -55,18 +55,18 @@ def judgeType(current_list):
     if len(current_list) == 1:
         return 1
     elif len(current_list) == 2:
-        if current_list[0] == current_list[1]:
+        if current_list[0].point == current_list[1].point:
             return 2
         else:
             return 0
     elif len(current_list) == 3:
-        if current_list[0] == current_list[1] and current_list[1] == current_list[2]:
+        if current_list[0].point == current_list[1].point and current_list[1].point == current_list[2].point:
             return 3
         else:
             return 0
     elif len(current_list) == 4:
-        if current_list[0] == current_list[1] and current_list[1] == current_list[2]:
-            if current_list[3] == current_list[2]:
+        if current_list[0].point == current_list[1].point and current_list[1].point == current_list[2].point:
+            if current_list[3].point == current_list[2].point:
                 return 6
             else:
                 return 4
@@ -74,14 +74,14 @@ def judgeType(current_list):
             return 0
     elif len(current_list) >= 5:
         for i in range(len(current_list)-1):
-            if current_list[i+1] != current_list[i]:
+            if current_list[i+1].point != current_list[i].point:
                 return 0
         return 5
 
 
 
 def judge(current_cards,last_cards):
-        if not(current_cards):
+        if not(last_cards):
                 return True 
         else:
             current_type = judgeType(current_cards)
@@ -92,38 +92,38 @@ def judge(current_cards,last_cards):
                     return False
                 else:
                     if current_type == 1:
-                        if current_cards[0] > last_cards[0]:
+                        if current_cards[0].point > last_cards[0].point:
                             return True
                         else:         
                             print("您所出的牌没有大过上家")                       
                             return False
                     elif current_type == 2:
-                        if current_cards[0] > last_cards[0]:
+                        if current_cards[0].point > last_cards[0].point:
                             return True
                         else:
                             print("您所出的牌没有大过上家") 
                             return False
                     elif current_type == 3:
-                        if current_cards[0] > last_cards[0]:
+                        if current_cards[0].point > last_cards[0].point:
                             return True
                         else:
                             print("您所出的牌没有大过上家") 
                             return False
                     elif current_type == 4:
-                        if current_cards[0] > last_cards[0]:
+                        if current_cards[0].point > last_cards[0].point:
                             return True
                         else:
                             print("您所出的牌没有大过上家") 
                             return False
                     elif current_type == 5:
-                        if current_cards[0] > last_cards[0]:
+                        if current_cards[0].point > last_cards[0].point:
                             return True
                         else:
                             print("您所出的牌没有大过上家") 
                             return False
                     elif current_type == 6:
                         if current_type == last_type:
-                            if current_cards[0] > last_cards[0]:
+                            if current_cards[0].point > last_cards[0].point:
                                 return True
                             else:
                                 print("您所出的牌没有大过上家") 
@@ -160,7 +160,10 @@ def string_to_index(my_give_cards,palyers_cards,current_cards):
                 if before_len == current_len:
                     print("输入的{}不是您所持有的牌".format(char))
                     return   False  
-        if judge(give_list,current_cards):
+        new_give_list = []
+        for index in give_index_list:
+                new_give_list.append(CARD(index))
+        if judge(new_give_list,current_cards):
                 return give_index_list
         else:
                 return False
@@ -202,6 +205,9 @@ def recieve(client_socket,palyers_cards,current_cards):
                         print("你的序号为{}，当前出牌者为{}".format(str(indexs[0]),str(indexs[1])))
                         print("请等待{}出牌".format(str(indexs[1])))
                 user_give_cards = pickle.loads(client_socket.recv(1024))
+                if user_give_cards[0] == -1:
+                        print("{}获胜，游戏结束".format(str((indexs[1]+2)%3))
+                        break
                 #因为在index_to_string函数中采用了append方法，所以此处要先clear
                 #也可以通过这种方法是实现计牌器和牌池
                 if user_give_cards:
@@ -215,6 +221,14 @@ def recieve(client_socket,palyers_cards,current_cards):
                         if give_none_time ==2:
                                 give_none_time = 0
                                 current_cards.clear()
+                if not(palyers_cards):
+                        print("您获胜，游戏结束")
+                        client_socket.send(pickle.dumps([-1]))
+                        break
+
+
+
+
 
 def main():
         client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
@@ -235,5 +249,5 @@ if __name__ == "__main__":
 
 
 
-# 剩余judge函数和异常退出程序未写
+# 剩余异常退出程序未写
 
