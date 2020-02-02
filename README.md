@@ -1,6 +1,6 @@
 # playcards
 
-[1.0 中文版说明](#中文版)/[version1.0 English introduction](#english-introduction)
+[1.0 中文版说明](#1.0-中文版)/[version1.0 English introduction](#version1.0-english-introduction)
 
 # 1.0 中文版 
 扑克牌游戏跑得快的python实现（控制台文字版）<br>
@@ -9,8 +9,8 @@
 目前异常处理问题未完成<br>
 2.0版本计划重构代码，用面向对象简化，并实现pygame图像化<br>
 
-[客户端源代码](client/client.py)<br>
-[服务器端源代码](server.py)
+[客户端源代码](version1/client.py)<br>
+[服务器端源代码](version1/server.py)
 
 # version1.0 English introduction
 an implement of a kind of Chinese card game with python(console text based)<br>
@@ -19,5 +19,5 @@ support many games at a time in the network(python mutithreading programming wit
 the solution of exception havn't been completed<br>
 in version 2.0, I plan to use OOP to simplify the code and graphical the game with pygame<br>
 
-[source code for client](client/client.py)<br>
-[source code for server](server.py)
+[source code for client](version1/client.py)<br>
+[source code for server](version1/server.py)
