@@ -1,6 +1,6 @@
 # playcards
 
-[1.0 中文版说明](#1.0-中文版)/[version1.0 English introduction](#version1.0-english-introduction)
+[1.0 中文版说明](#10-中文版)/[version1.0 English introduction](#version10-english-introduction)
 
 # 1.0 中文版 
 扑克牌游戏跑得快的python实现（控制台文字版）<br>
