@@ -63,6 +63,7 @@ def main():
         tables = []
         server_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         server_socket.bind(('',8888))
+        #这里可以绑定学校服务器，以此供给广域网使用，即可以把服务器端程序搬到学校服务器上
         server_socket.listen(128)
         print("服务器开始工作")
         population_on_a_table = 0
