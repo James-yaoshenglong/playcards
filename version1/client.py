@@ -233,6 +233,7 @@ def recieve(client_socket,palyers_cards,current_cards):
 def main():
         client_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         client_socket.connect(("127.0.0.1",8888))
+        #这个服务器IP地址目前为本机IP以供调试，实际使用时connect学校服务器的IP可以供广域网使用
         palyers_cards = []
         recv_data = pickle.loads(client_socket.recv(1024))
         index_to_string(recv_data,palyers_cards)
