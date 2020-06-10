@@ -46,6 +46,21 @@ class CardSprite(GameSprite):
         #设置牌的初始位置
         self.rect.x = x
         self.rect.y = y
+        self.onclick = False #判断是否被点击
+        self.given = False #判断是否被选中要出
     
     def update(self): #所有方法都不要忘记加self参数
-        pass
+        if(self.onclick):
+            self.given = not self.given
+            self.onclick = False
+            if(self.given):
+                self.rect.y -= 20
+            else:
+                self.rect.y += 20
+
+
+    def mouse_click(self,mouse_pos):#目前无法实现堆叠状况的正确点击
+        if(mouse_pos[0]>self.rect.left and  mouse_pos[0]<self.rect.right and mouse_pos[1]<self.rect.bottom and mouse_pos[1]>self.rect.top):#判断点击的位置是否在牌的中间
+            self.onclick = True
+        
+        

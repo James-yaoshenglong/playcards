@@ -10,18 +10,18 @@ class Game(object):
         #2.创建游戏时钟
         self.clock = pygame.time.Clock()
 
-        #3.调用私有方法，创建精灵和精灵组
+        #3.#创建背景精灵及精灵组
+        #目前还是先创建所有精灵
         self.__create_sprites()
-
-    def __create_sprites(self):
-    #创建背景精灵及精灵组
         bg = Background()
         self.back_group = pygame.sprite.Group(bg)
+
+    def __create_sprites(self):
     #创建牌类精灵及精灵组
         self.card_group = pygame.sprite.Group()
-        l = [11,11,11,11,11,11,11,11]#调试用，利用循环创建
+        l = [11,2,1,10,11,13,11,12,3,4,5,6,7,8,2,9,8]#调试用，利用循环创建
         for i in range(len(l)):
-            card_sprite = CardSprite(l[i],10+54*i,SCREEN_RECT.bottom-100)
+            card_sprite = CardSprite(l[i],10+56*i,SCREEN_RECT.bottom-100)
             self.card_group.add(card_sprite)
          
 
@@ -30,6 +30,10 @@ class Game(object):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:#不写这个打右上角的x关不掉
                 self.__game_over()
+            #判断是否被鼠标点击出牌
+            elif (event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed()[0]):
+                for card_sprite in self.card_group:
+                    card_sprite.mouse_click(pygame.mouse.get_pos())
 
 
     def __update_sprites(self):
@@ -46,7 +50,7 @@ class Game(object):
 
     def start_game(self):
         print("游戏开始")
-        while True:
+        while True:#这里可以要用多线程设计，让发牌和主循环分开
             #1.设置刷新帧率
             self.clock.tick(FRAME_PER_SEC)
             #2.监听事件
