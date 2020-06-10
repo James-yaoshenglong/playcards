@@ -7,7 +7,13 @@ SCREEN_RECT = pygame.Rect(0,0,997,604)
 FRAME_PER_SEC = 60
 #背景图片地址
 BGC_IMAGE_NAME = './images/table.png'
-
+#牌图片的大小
+CARD_SIZE = (56,98)
+#这些位置目前还没有实现居中对齐
+#手牌位置
+HAND_CARDS_POS = (10,SCREEN_RECT.bottom-CARD_SIZE[1]-10)
+#出牌位置 
+GIVEN_CARDS_POS = (200,SCREEN_RECT.bottom-2*CARD_SIZE[1]-20)
             
 
 
@@ -46,21 +52,24 @@ class CardSprite(GameSprite):
         #设置牌的初始位置
         self.rect.x = x
         self.rect.y = y
-        self.onclick = False #判断是否被点击
+        #self.onclick = False #判断是否被点击
         self.given = False #判断是否被选中要出
     
     def update(self): #所有方法都不要忘记加self参数
-        if(self.onclick):
+        # if(self.onclick):
+        #     self.given = not self.given
+        #     self.onclick = False
+        #     if(self.given):
+        #         self.rect.y -= 20
+        #     else:
+        #         self.rect.y += 20
+        pass
+
+    def mouse_click(self,mouse_pos):#目前无法实现堆叠状况的正确点击
+        if(mouse_pos[0]>self.rect.left and  mouse_pos[0]<self.rect.right and mouse_pos[1]<self.rect.bottom and mouse_pos[1]>self.rect.top):#判断点击的位置是否在牌的中间
             self.given = not self.given
-            self.onclick = False
             if(self.given):
                 self.rect.y -= 20
             else:
                 self.rect.y += 20
-
-
-    def mouse_click(self,mouse_pos):#目前无法实现堆叠状况的正确点击
-        if(mouse_pos[0]>self.rect.left and  mouse_pos[0]<self.rect.right and mouse_pos[1]<self.rect.bottom and mouse_pos[1]>self.rect.top):#判断点击的位置是否在牌的中间
-            self.onclick = True
-        
         
