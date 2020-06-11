@@ -19,6 +19,6 @@ class Card(object):
         else:
             self.index = index
             self.color = self.index % 4
-            self.point = self.index % 13
+            self.point = self.index // 4 #这样让所有牌可以按index排序,整除用//
             self.name = POINT_LIST[self.point]
         self.pic = './images/'+self.name+'.png' #图片的地址
