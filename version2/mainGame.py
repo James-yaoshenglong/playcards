@@ -23,8 +23,6 @@ class Game(object):
         self.next_card = GivenCardList(NEXT_CARDS_POS)
         #5.设置事件标记
         self.can_give = False
-        self.receive_hand = True
-        self.receive_given = False
         self.current_giver = 0
         self.your_giver = 0
         self.give_none_time = 0
@@ -53,7 +51,7 @@ class Game(object):
         if temp_card.compare(self.current_card):
             #这里调用network类的方法进行发送
             if not temp_index_list:
-                if self.give_none_time == 0:
+                if not self.current_card.index_l: #这里要用current card来判断而不能用give_none_times
                     print("请您任意出至少一张牌：")
                     print("请重新出牌：")
                 else:
@@ -68,9 +66,11 @@ class Game(object):
         else :
             self.can_give = True
             print("请重新出牌：")
+        if not self.hand_card.index_l:#判断是否获胜
+            self.network.give_cards([-1])
+            self.__game_over()
             
         
-
 
     def __event_handler(self):
         #事件处理函数，负责处理动画和接受发送消息
@@ -84,21 +84,7 @@ class Game(object):
             #出牌
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN and self.can_give):
                 self.__give_cards()
-        #接受发牌,这个移到下面部分
-        # if(self.receive_given):
-        #     if(self.current_giver == (self.your_giver+1)%2):
-        #         self.next_card.update_list(test_list)
-        #     elif (self.current_giver == self.your_giver):
-        #         self.given_card.update_list(test_list)
-        #     else:
-        #         self.last_card.update_list(test_list)
-        # elif(self.receive_hand):
-        #     print("jieshoufapai")
-        #     self.hand_card= HandCardList(test_list)#目前先测试
-        #     self.hand_card.update_list()
-        #     self.receive_hand = False
             
-
 
     def __update_status(self):
         #更新背景
@@ -112,7 +98,6 @@ class Game(object):
         if not q.empty():
             info = q.get()
             if info[0] == 'hand_card':
-                #目前先测试
                 self.hand_card.update_list(info[1])
             elif info[0] == 'giver_index':
                 self.your_giver = info[1][0]
@@ -121,12 +106,16 @@ class Game(object):
                     self.can_give = True
             elif info[0] == 'current_card':
                 if info[1]:
-                    self.current_card.update_list(info[1])
+                    if info[1][0] == -1:# 判断游戏结束
+                        self.__game_over()
+                    else:
+                        self.current_card.update_list(info[1])
                 else:
                     self.give_none_time+=1
                     if self.give_none_time == 2:
                         self.give_none_time = 0
                         self.current_card.update_list([])
+                #更新显示
                 if(self.current_giver == (self.your_giver+1)%3):
                     self.next_card.update_list(info[1])
                 elif (self.current_giver == self.your_giver):
@@ -145,20 +134,14 @@ class Game(object):
 
     def start_game(self):
         print("游戏开始")
-        self.network.start()
-        while True:#这里可以要用多线程设计，让发牌和主循环分开
+        self.network.start() #这里要用多线程设计，让发牌和主循环分开
+        while True:
             #1.设置刷新帧率
             self.clock.tick(FRAME_PER_SEC)
             #2.监听事件，可将通信加入这个
             self.__event_handler()
-            #3.更新/绘制精灵组
+            #3.更新各个参数
             self.__update_status()
             #4.更新显示
             pygame.display.update()
 
-
-def test():
-    game = Game()
-    game.start_game()
-
-test()

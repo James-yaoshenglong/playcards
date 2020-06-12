@@ -49,8 +49,13 @@ class GivenCardList(CardList):
         self.type = 0 #牌组的类型  
     
     @staticmethod
-    def __index_to_point(index):#这一点还可以改进，怎么样可以不用这个方法
-        return index // 4
+    def __index_to_point(index):#这一点还可以改进，怎么样可以不用这个方法而直接调类中的内容
+        if index == 52: #用这个方法修改大王压小王出问题
+            return 13
+        elif index == 53:
+            return 14
+        else:
+            return index // 4
 
     def __judge_type(self):
         if self.index_l:
@@ -87,60 +92,59 @@ class GivenCardList(CardList):
         self.type = self.__judge_type()
 
     def compare(self,another):#下面还要定义比较牌组大小的函数
-        if another.type == 0:
-                return True 
-        else:
-            if self.type > 0:
-                if self.type != 6 and self.type != another.type:
-                    print("你给的牌与上家类型不同")
-                    return False
-                else:
-                    if self.type == 1:
-                        if self.__index_to_point(self.index_l[0]) > self.__index_to_point(another.index_l[0]):
-                            return True
-                        else:         
-                            print("您所出的牌没有大过上家")                       
-                            return False
-                    elif self.type == 2:
-                        if self.__index_to_point(self.index_l[0]) > self.__index_to_point(another.index_l[0]):
-                            return True
-                        else:
-                            print("您所出的牌没有大过上家") 
-                            return False
-                    elif self.type == 3:
-                        if self.__index_to_point(self.index_l[0]) > self.__index_to_point(another.index_l[0]):
-                            return True
-                        else:
-                            print("您所出的牌没有大过上家") 
-                            return False
-                    elif self.type == 4:
-                        if self.__index_to_point(self.index_l[0]) > self.__index_to_point(another.index_l[0]):
-                            return True
-                        else:
-                            print("您所出的牌没有大过上家") 
-                            return False
-                    elif self.type == 5:
-                        if len(self.index_l) != len(another.index_l):
-                            print("你给的牌与上家类型不同")
-                            return False
-                        elif self.__index_to_point(self.index_l[0]) > self.__index_to_point(another.index_l[0]):
-                            return True
-                        else:
-                            print("您所出的牌没有大过上家") 
-                            return False
-                    elif self.type == 6:
-                        if self.type == another.type:
-                            if self.__index_to_point(self.index_l[0]) > self.__index_to_point(another.index_l[0]):
-                                return True
-                            else:
-                                print("您所出的牌没有大过上家") 
-                                return False
-                        else:
-                            return True 
-            elif self.type == 0:
-                return True
-            else:
+        if self.type < 0: #要先判断是否为非法
                 print("您给的牌为非法类型")
                 return False
+        elif another.type == 0:
+                return True 
+        elif self.type > 0:
+            if self.type != 6 and self.type != another.type:
+                print("你给的牌与上家类型不同")
+                return False
+            else:
+                if self.type == 1:
+                    if self.__index_to_point(self.index_l[0]) > self.__index_to_point(another.index_l[0]):
+                        return True
+                    else:         
+                        print("您所出的牌没有大过上家")                       
+                        return False
+                elif self.type == 2:
+                    if self.__index_to_point(self.index_l[0]) > self.__index_to_point(another.index_l[0]):
+                        return True
+                    else:
+                        print("您所出的牌没有大过上家") 
+                        return False
+                elif self.type == 3:
+                    if self.__index_to_point(self.index_l[0]) > self.__index_to_point(another.index_l[0]):
+                        return True
+                    else:
+                        print("您所出的牌没有大过上家") 
+                        return False
+                elif self.type == 4:
+                    if self.__index_to_point(self.index_l[0]) > self.__index_to_point(another.index_l[0]):
+                        return True
+                    else:
+                        print("您所出的牌没有大过上家") 
+                        return False
+                elif self.type == 5:
+                    if len(self.index_l) != len(another.index_l):#顺子类型一样也要判断长度
+                        print("你给的牌与上家类型不同")
+                        return False
+                    elif self.__index_to_point(self.index_l[0]) > self.__index_to_point(another.index_l[0]):
+                        return True
+                    else:
+                        print("您所出的牌没有大过上家") 
+                        return False
+                elif self.type == 6:
+                    if self.type == another.type:
+                        if self.__index_to_point(self.index_l[0]) > self.__index_to_point(another.index_l[0]):
+                            return True
+                        else:
+                            print("您所出的牌没有大过上家") 
+                            return False
+                    else:
+                        return True 
+        elif self.type == 0:
+            return True
   
 
