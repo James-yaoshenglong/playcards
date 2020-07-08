@@ -11,7 +11,9 @@ BGC_IMAGE_NAME = './images/table.png'
 CARD_SIZE = (56,98)
 #这些位置目前还没有实现居中对齐
 #手牌位置
-HAND_CARDS_POS = (10,SCREEN_RECT.bottom-CARD_SIZE[1]-10)
+HAND_CARDS_POS = (120,SCREEN_RECT.bottom-CARD_SIZE[1]-10)
+#手牌偏移比例
+HAND_CARDS_PARTITION = 0.4
 #出牌位置 
 GIVEN_CARDS_POS = (200,SCREEN_RECT.bottom-2*CARD_SIZE[1]-20)
 #上家位置
@@ -49,8 +51,8 @@ class CardSprite(GameSprite):
         self.given = False #判断是否被选中要出
     
 
-    def mouse_click(self,mouse_pos):#目前无法实现堆叠状况的正确点击
-        if(mouse_pos[0]>self.rect.left and  mouse_pos[0]<self.rect.right and mouse_pos[1]<self.rect.bottom and mouse_pos[1]>self.rect.top):#判断点击的位置是否在牌的中间
+    def mouse_click(self,mouse_pos):#目前无法实现堆叠状况的正确点击,这个bug目前部分解决，但是最边上一个只能点一半
+        if(mouse_pos[0]>self.rect.left and  mouse_pos[0]<self.rect.left+CARD_SIZE[0]*HAND_CARDS_PARTITION and mouse_pos[1]<self.rect.bottom and mouse_pos[1]>self.rect.top):#判断点击的位置是否在牌的中间
             self.given = not self.given
             if(self.given):
                 self.rect.y -= 20

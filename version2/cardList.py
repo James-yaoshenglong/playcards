@@ -27,7 +27,7 @@ class CardList(object):
 class HandCardList(CardList):
     '''手牌类'''
     def __init__(self,pos):
-        super().__init__(HAND_CARDS_POS,1)
+        super().__init__(HAND_CARDS_POS,HAND_CARDS_PARTITION)
 
     def change_list(self):
         for temp in self.group:
