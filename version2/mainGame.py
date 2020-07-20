@@ -3,7 +3,6 @@ from gameSprites import *
 from cardList import *
 from networkClient import *
 
-test_list = [17,1,2,3,11,16]
 
 class Game(object):
     '''主游戏'''
@@ -28,6 +27,10 @@ class Game(object):
         self.give_none_time = 0
         #6.创建network类
         self.network = Network()
+        #7. 加载背景音乐
+        pygame.mixer.init()						# 初始化
+        track = pygame.mixer.music.load('./musics/dj.mp3')	# 加载音乐文件
+        pygame.mixer.music.play()				# 开始播放音乐流
 
 
     def __create_card_sprites(self,card_list,card_group,pos):
