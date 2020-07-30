@@ -133,6 +133,7 @@ class Game(object):
                     else:
                         self.current_card.update_list(info[1])
                     self.none_give_list[(self.current_giver-self.your_giver+3)%3] = 0 #update the none give list
+                    self.give_none_time = 0 #一旦正常出牌，give_none_time就应该置零，以防出现中间家不出，下一家又出的情况
                 else:
                     self.give_none_time+=1
                     if self.give_none_time == 2:
