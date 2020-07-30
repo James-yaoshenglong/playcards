@@ -9,6 +9,7 @@ class Game(object):
     def __init__(self):
         #1.创建游戏主窗口
         self.screen = pygame.display.set_mode(SCREEN_RECT.size)
+        pygame.init()
         #2.创建游戏时钟
         self.clock = pygame.time.Clock()
         #3.创建背景精灵及精灵组
@@ -25,6 +26,7 @@ class Game(object):
         self.current_giver = 0
         self.your_giver = 0
         self.give_none_time = 0
+        self.none_give_list = [0,0,0] #the fisrt is your self, the second is the next
         #6.创建network类
         self.network = Network()
         #7. 加载背景音乐
@@ -41,7 +43,23 @@ class Game(object):
         for i in range(len(card_list)):
             card_sprite = CardSprite(card_list[i],pos[0]+i*CARD_SIZE[0],pos[1])
             card_group.add(card_sprite)
-         
+
+
+    def __display(self, pos):
+        # print("buchu")
+        font = pygame.font.SysFont("Times", 50)
+        text = font.render("None", True, (0, 0, 0))
+        self.screen.blit(text, pos)
+
+
+    def __display_none_give(self):
+        if self.none_give_list[0] == 1:
+            self.__display(GIVEN_CARDS_POS)
+        if self.none_give_list[1] == 1:
+            self.__display(NEXT_CARDS_POS)
+        if self.none_give_list[2] == 1:
+            self.__display(LAST_CARDS_POS)        
+
 
     #下面还要写出牌的函数
     def __give_cards(self):
@@ -97,6 +115,7 @@ class Game(object):
         self.given_card.group.draw(self.screen)
         self.last_card.group.draw(self.screen)
         self.next_card.group.draw(self.screen)
+        self.__display_none_give()
         #更新来自网络模块的信息
         if not q.empty():
             info = q.get()
@@ -113,11 +132,13 @@ class Game(object):
                         self.__game_over()
                     else:
                         self.current_card.update_list(info[1])
+                    self.none_give_list[(self.current_giver-self.your_giver+3)%3] = 0 #update the none give list
                 else:
                     self.give_none_time+=1
                     if self.give_none_time == 2:
                         self.give_none_time = 0
                         self.current_card.update_list([])
+                    self.none_give_list[(self.current_giver-self.your_giver+3)%3] = 1 #update the none give list
                 #更新显示
                 if(self.current_giver == (self.your_giver+1)%3):
                     self.next_card.update_list(info[1])
@@ -125,8 +146,6 @@ class Game(object):
                     self.given_card.update_list(info[1])
                 else:
                     self.last_card.update_list(info[1])
-
-    
 
 
     @staticmethod
