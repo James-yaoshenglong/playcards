@@ -31,7 +31,7 @@ class Game(object):
         self.network = Network()
         #7. 加载背景音乐
         pygame.mixer.init()						# 初始化
-        track = pygame.mixer.music.load('./musics/dj.mp3')	# 加载音乐文件
+        track = pygame.mixer.music.load('./musics/douDiZhuBgm.mp3')	# 加载音乐文件
         pygame.mixer.music.play()				# 开始播放音乐流
 
 
